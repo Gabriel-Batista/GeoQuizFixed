@@ -1,7 +1,7 @@
 package com.bignerdranch.android.geoquiz;
 
 /**
- * Created by Owner on 4/26/2017. does it work
+ * Created by Owner on 4/26/2017.
  */
 
 public class Question {
