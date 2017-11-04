@@ -2,6 +2,7 @@ package com.bignerdranch.android.geoquiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button mNextButton;             //Holds reference to Next Button
     private Button mCheatButton;            //Holds reference to Cheat Button
     private TextView mQuestionTextView;     //Holds reference to QuestionTextView ( the space where question is displayed )
+    private TextView mApiTextView;          //Holds reference to ApiTextView ( the space where api is displayed )
 
     private int mScore = 0;                     //Keeps score for game.
 
@@ -38,6 +40,9 @@ public class QuizActivity extends AppCompatActivity {
 
     //Keeps track of the current question being displayed
     private int mCurrentIndex = 0;
+
+    //Keeps track of how many times user cheated.
+    private int mCheatCount;
 
     private boolean[] mIsCheater = new boolean[mQuestionBank.length];   //An array that keeps track of which questions you cheated on.
 
@@ -58,6 +63,10 @@ public class QuizActivity extends AppCompatActivity {
         //Grabs a reference to the question text box
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         updateQuestion();
+
+        //Grabs a reference to the api text box and sets text
+        mApiTextView = (TextView) findViewById(R.id.question_api_view);
+        mApiTextView.append(Integer.toString(Build.VERSION.SDK_INT));
 
         //Get a referrence to the view object true_button.
         mTrueButton = (Button) findViewById(R.id.true_button);
@@ -111,10 +120,18 @@ public class QuizActivity extends AppCompatActivity {
         mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mCheatCount++;
+
+                if(mCheatCount == 3){
+                    mCheatButton.setClickable(false);
+                    Toast.makeText(QuizActivity.this, "No more cheats", Toast.LENGTH_SHORT).show();
+                }
+
                 // Start CheatActivity
                 boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
                 Intent intent = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
                 startActivityForResult(intent, REQUEST_CODE_CHEAT);
+
             }
         });
     }

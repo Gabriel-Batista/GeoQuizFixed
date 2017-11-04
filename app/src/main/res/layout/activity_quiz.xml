@@ -44,4 +44,11 @@
             android:drawablePadding="4dp"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/question_api_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="API Level "/>
+
 </LinearLayout>
